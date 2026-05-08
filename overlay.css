@@ -1,0 +1,832 @@
+/* OpenSage overlay */
+
+#ia-root {
+  all: initial;
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(0);
+  z-index: 2147483647;
+  width: 700px;
+  max-width: calc(100vw - 24px);
+  color: #f8fafc;
+  /* Readability-first stack: Inter (if user has it), then SF Pro Text on
+     macOS, then Segoe UI Variable on Windows 11, then standard fallbacks.
+     Inter and SF Pro Text are tuned for UI legibility at small sizes. */
+  font-family: 'Inter', 'SF Pro Text', -apple-system, BlinkMacSystemFont,
+               'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ia-root,
+#ia-root * {
+  box-sizing: border-box;
+}
+
+#ia-root.ia-hidden {
+  display: none;
+}
+
+#ia-root.ia-large-text {
+  font-size: 16px;
+}
+
+#ia-root.ia-high-contrast {
+  color: #fff;
+}
+
+#ia-bar,
+#ia-panel {
+  /* ~15% dark tint — page text behind stays clearly readable
+     while the panel still feels like a defined surface. */
+  background: rgba(15, 23, 42, 0.15);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.18);
+}
+
+#ia-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px 14px 0 0;
+  cursor: move;
+  background: rgba(15, 23, 42, 0.18);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+#ia-panel {
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+  padding: 10px 12px 12px;
+  gap: 8px;
+}
+
+#ia-root.ia-minimized #ia-bar {
+  border-radius: 14px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.55);
+}
+
+#ia-root.ia-minimized #ia-panel {
+  display: none;
+}
+
+#ia-bar-left,
+#ia-title-wrap,
+#ia-bar-actions,
+#ia-panel,
+#ia-controls {
+  display: flex;
+}
+
+#ia-bar-left,
+#ia-title-wrap {
+  align-items: center;
+}
+
+#ia-title-wrap {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  line-height: 1.2;
+}
+
+#ia-bar-actions,
+#ia-controls {
+  gap: 8px;
+}
+
+#ia-panel {
+  flex-direction: column;
+  gap: 2px;
+}
+
+#ia-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ia-meta-card,
+#ia-summary-card {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.ia-meta-label {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+#ia-summary-text {
+  color: #e2e8f0;
+  line-height: 1.5;
+  max-height: 98px;
+  overflow-y: auto;
+}
+
+#ia-root.ia-summary-expanded #ia-summary-text {
+  max-height: 260px;
+}
+
+#ia-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ia-link-btn {
+  border: 0;
+  background: transparent;
+  color: #93c5fd;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+}
+
+#ia-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  margin-right: 10px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.45);
+}
+
+#ia-title {
+  color: #f8fafc;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, 0.95),
+    0 1px 3px rgba(0, 0, 0, 0.95),
+    0 0 14px rgba(0, 0, 0, 0.7);
+}
+
+#ia-mode-badge {
+  color: #ddd6fe;
+  font-size: 10px;
+  margin-top: 1px;
+  font-weight: 700;
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, 0.95),
+    0 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+#ia-status-label {
+  font-weight: 700;
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, 0.95),
+    0 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+/* Section label — kept later in this file. This earlier shadow rule is
+   intentionally a no-op so the final, plain-text styling wins. */
+
+#ia-panel-header,
+#ia-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2px;
+  margin-top: 0;
+}
+
+#ia-panel-title {
+  color: #c7d2fe;
+  font-weight: 700;
+}
+
+#ia-status-label {
+  color: #94a3b8;
+  font-size: 11px;
+  margin-left: 6px;
+}
+
+#ia-status-label.ia-thinking {
+  color: #fbbf24;
+}
+
+.ia-pill,
+.ia-secondary,
+#ia-hide-btn,
+#ia-min-btn {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(30, 41, 59, 0.85);
+  color: #cbd5e1;
+  font-weight: 600;
+  transition: background 0.12s, border-color 0.12s, color 0.12s, transform 0.08s;
+}
+
+.ia-pill,
+.ia-secondary,
+#ia-hide-btn,
+#ia-min-btn {
+  cursor: pointer;
+}
+
+.ia-pill:hover,
+.ia-secondary:hover,
+#ia-hide-btn:hover,
+#ia-min-btn:hover {
+  background: rgba(51, 65, 85, 1);
+  border-color: rgba(148, 163, 184, 0.7);
+  color: #fff;
+}
+
+.ia-pill:active,
+.ia-secondary:active,
+#ia-hide-btn:active,
+#ia-min-btn:active {
+  transform: translateY(1px);
+}
+
+.ia-pill:focus-visible,
+.ia-secondary:focus-visible,
+#ia-hide-btn:focus-visible,
+#ia-min-btn:focus-visible {
+  outline: 2px solid #a5b4fc;
+  outline-offset: 2px;
+}
+
+.ia-pill,
+.ia-secondary {
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ia-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ia-pill.ia-on {
+  background: rgba(34, 197, 94, 0.28);
+  border-color: rgba(34, 197, 94, 0.65);
+  color: #bbf7d0;
+}
+
+.ia-pill.ia-snap-active {
+  background: rgba(99, 102, 241, 0.32);
+  border-color: rgba(99, 102, 241, 0.65);
+  color: #e0e7ff;
+}
+
+.ia-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+#ia-hide-btn,
+#ia-min-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+#ia-controls {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ia-field span,
+.ia-inline-toggle span {
+  color: #cbd5e1;
+  font-size: 12px;
+}
+
+/* Single line: prompt + Run */
+.ia-prompt-row {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.45);
+  overflow: hidden;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.ia-prompt-row:focus-within {
+  border-color: rgba(139, 92, 246, 0.75);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22);
+}
+
+.ia-prompt-row #ia-prompt {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  min-height: 40px;
+  max-height: 200px;
+  padding: 11px 13px;
+  outline: none;
+  resize: none;
+  overflow-y: auto;
+  line-height: 1.5;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 14px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+}
+
+.ia-prompt-row #ia-prompt::placeholder {
+  color: #94a3b8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+}
+
+#ia-root.ia-prompt-expanded .ia-prompt-row #ia-prompt {
+  min-height: 56px;
+}
+
+.ia-prompt-row #ia-ask-btn {
+  flex: 0 0 auto;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 0 18px;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  border-left: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(30, 41, 59, 0.85);
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.ia-prompt-row #ia-ask-btn:hover {
+  background: rgba(51, 65, 85, 0.95);
+  color: #f1f5f9;
+}
+
+.ia-prompt-row #ia-ask-btn:focus-visible {
+  outline: 2px solid #a5b4fc;
+  outline-offset: -2px;
+}
+
+.ia-inline-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #cbd5e1;
+}
+
+#ia-transcript-wrap {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#ia-transcript {
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+#ia-transcript.ia-live {
+  color: #e2e8f0;
+}
+
+#ia-meta-site,
+#ia-meta-title,
+#ia-meta-language,
+#ia-meta-classification,
+#ia-meta-supported {
+  color: #e2e8f0;
+  line-height: 1.4;
+}
+
+#ia-quick-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ia-group-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 2px 6px;
+}
+
+.ia-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ia-group-label {
+  /* Plain readable secondary-text — no caps, no bold, no shadow. */
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #94a3b8;
+  font-weight: 400;
+  padding-left: 2px;
+  text-shadow: none;
+  opacity: 0.85;
+}
+
+.ia-group-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Accent variant now matches the rest — uniform button look across the board */
+.ia-secondary.ia-accent {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(148, 163, 184, 0.4);
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.ia-secondary.ia-accent:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: rgba(148, 163, 184, 0.7);
+  color: #f1f5f9;
+}
+
+.ia-brand-foot {
+  margin-left: auto;
+  color: #cbd5e1;
+  font-size: 10px;
+  font-style: italic;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+#ia-output-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+#ia-clear-btn {
+  font: inherit;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(30, 41, 59, 0.92);
+  color: #e2e8f0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#ia-clear-btn:hover {
+  color: #e2e8f0;
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.25);
+}
+
+.ia-secondary {
+  color: #cbd5e1;
+}
+
+.ia-secondary.ia-active {
+  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(99, 102, 241, 0.48);
+  color: #e0e7ff;
+}
+
+#ia-answers {
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 0;
+  padding-right: 2px;
+}
+
+.ia-answer {
+  padding: 10px 12px;
+  border-radius: 10px;
+  /* Solid-enough slate (~78% opaque) so the page text behind the panel
+     does NOT bleed through and clobber the answer text. The OUTER panel
+     stays light-tint (~15-18%); only the answer surface itself is opaque
+     where the user is actually trying to read.  */
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 4px 14px rgba(2, 6, 23, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ia-answer-body {
+  margin: 0;
+  padding: 0;
+}
+
+.ia-answer-tag {
+  color: #c7d2fe;
+  font-size: 11px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.ia-answer-text {
+  /* Brighter near-white text + small shadow = legible on ANY page. */
+  color: #ffffff;
+  line-height: 1.55;
+  font-size: 14.5px;
+  margin: 0;
+  letter-spacing: 0.005em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.ia-answer-text strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Headings — # through ###### map to ia-md-h1 … ia-md-h6.
+   Sizes scale down predictably; H1 / H2 get the most visual weight. */
+.ia-md-h1,
+.ia-md-h2,
+.ia-md-h3,
+.ia-md-h4,
+.ia-md-h5,
+.ia-md-h6 {
+  display: block;
+  font-weight: 800;
+  letter-spacing: 0.005em;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.ia-md-h1 {
+  margin: 12px 0 6px;
+  color: #ffffff;
+  font-size: 19px;
+  border-bottom: 1px solid rgba(165, 180, 252, 0.25);
+  padding-bottom: 4px;
+}
+
+.ia-md-h2 {
+  margin: 10px 0 5px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.ia-md-h3 {
+  margin: 9px 0 4px;
+  color: #e0e7ff;
+  font-size: 14.5px;
+}
+
+.ia-md-h4 {
+  margin: 7px 0 3px;
+  color: #c7d2fe;
+  font-size: 13.5px;
+}
+
+.ia-md-h5,
+.ia-md-h6 {
+  margin: 6px 0 3px;
+  color: #c7d2fe;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Backward-compat — older renderer used `.ia-md-line` for any heading.
+   Treat it like an h3 so existing answers don't visually regress while
+   users reload the extension. */
+.ia-md-line {
+  display: block;
+  margin: 9px 0 4px;
+  color: #e0e7ff;
+  font-weight: 800;
+  font-size: 14.5px;
+  line-height: 1.3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.ia-md-strong {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.ia-md-li {
+  display: block;
+  margin: 3px 0;
+  padding-left: 1.1em;
+  text-indent: -0.85em;
+  line-height: 1.5;
+  font-size: 14px;
+  color: #f1f5f9;
+}
+
+/* Numbered-list prefix renders inside the bullet element. */
+.ia-md-num {
+  display: inline-block;
+  min-width: 1.4em;
+  color: #a5b4fc;
+  font-weight: 700;
+}
+
+/* Italic, used by the new renderer for *single-asterisk* spans. */
+.ia-answer-text em {
+  font-style: italic;
+  color: #f8fafc;
+}
+
+.ia-answer-text code {
+  /* Inline `code` — solid dark chip, high-contrast accent text. */
+  background: rgba(15, 23, 42, 0.85);
+  color: #a5d8ff;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+
+.ia-code {
+  position: relative;
+  margin-top: 6px;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  /* Slightly more opaque than the answer body so code stays crisp. */
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.30);
+}
+
+.ia-answer-text > .ia-code:first-child {
+  margin-top: 0;
+}
+
+.ia-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 9px;
+  background: rgba(15, 23, 42, 0.92);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.20);
+  font-size: 11px;
+}
+
+.ia-code-lang {
+  color: #c7d2fe;
+  font-weight: 700;
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
+  font-size: 11px;
+}
+
+.ia-code pre {
+  margin: 0;
+  padding: 10px 12px;
+  /* Bright pale text on solid dark background — high contrast, easy on
+     the eyes when you're glancing during a live session. */
+  color: #e0e7ff;
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
+  overflow-x: auto;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.ia-copy {
+  padding: 3px 10px;
+  font-size: 11px;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(30, 27, 75, 0.92);
+  color: #f1f5f9;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.ia-copy:hover {
+  background: rgba(79, 70, 229, 0.85);
+  border-color: rgba(139, 92, 246, 0.65);
+}
+
+.ia-copy.ia-copied {
+  background: rgba(34, 197, 94, 0.75);
+  border-color: rgba(34, 197, 94, 0.85);
+  color: #f0fdf4;
+}
+
+.ia-error {
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.4);
+  border-color: rgba(248, 113, 113, 0.25);
+}
+
+.ia-foot {
+  color: #cbd5e1;
+  font-size: 10px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+.ia-page-high-contrast {
+  filter: contrast(1.08);
+}
+
+/* Custom scrollbars to match dark theme */
+#ia-answers::-webkit-scrollbar,
+.ia-code pre::-webkit-scrollbar,
+.ia-prompt-row #ia-prompt::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+#ia-answers::-webkit-scrollbar-track,
+.ia-code pre::-webkit-scrollbar-track,
+.ia-prompt-row #ia-prompt::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+}
+#ia-answers::-webkit-scrollbar-thumb,
+.ia-code pre::-webkit-scrollbar-thumb,
+.ia-prompt-row #ia-prompt::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.55);
+  border-radius: 999px;
+}
+#ia-answers::-webkit-scrollbar-thumb:hover,
+.ia-code pre::-webkit-scrollbar-thumb:hover,
+.ia-prompt-row #ia-prompt::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.75);
+}
+
+/* Compact / minimized state — only the bar remains, like a chat-head */
+#ia-root.ia-minimized {
+  width: auto;
+  left: auto;
+  right: 14px;
+  transform: none;
+  top: 14px;
+}
+
+#ia-root.ia-minimized #ia-bar {
+  padding: 8px 12px;
+  cursor: grab;
+}
+
+#ia-root.ia-minimized #ia-mode-badge,
+#ia-root.ia-minimized #ia-status-label {
+  display: none;
+}
+
+#ia-root.ia-minimized #ia-bar-actions .ia-pill {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  #ia-root {
+    width: min(94vw, 620px);
+    left: 3vw;
+    transform: translateZ(0);
+  }
+
+  #ia-metadata-grid {
+    grid-template-columns: 1fr;
+  }
+}

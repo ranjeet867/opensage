@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node — only relevant if a contributor decides to add tooling later
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Build artifacts
+*.zip
+dist/
+build/
+out/
+
+# Local environment files (none should exist for an extension, but
+# defensive in case someone scaffolds an experimental build step).
+.env
+.env.local
+*.log

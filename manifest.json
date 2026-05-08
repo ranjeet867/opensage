@@ -1,0 +1,78 @@
+{
+  "manifest_version": 3,
+  "name": "OpenSage — AI Code Companion",
+  "short_name": "OpenSage",
+  "version": "1.0.0",
+  "description": "Open-source AI coding companion that works on every website. Auto-detects the language, explains code, drafts & completes solutions, finds bugs, reviews security, and answers spoken questions — all powered by your own Anthropic API key.",
+  "author": "OpenSage Contributors",
+  "homepage_url": "https://github.com/REPLACE-WITH-YOUR-GITHUB/opensage",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://api.anthropic.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "site-detectors.js",
+        "content-extractor.js",
+        "audio-handler.js",
+        "prompt-builder.js",
+        "overlay-ui.js",
+        "content.js"
+      ],
+      "css": ["overlay.css"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "OpenSage — open settings",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "commands": {
+    "toggle-overlay": {
+      "suggested_key": {
+        "mac": "MacCtrl+Shift+Space",
+        "default": "Ctrl+Shift+Space"
+      },
+      "description": "Show or hide the OpenSage overlay"
+    },
+    "capture-screenshot": {
+      "suggested_key": {
+        "mac": "MacCtrl+Shift+S",
+        "default": "Ctrl+Shift+S"
+      },
+      "description": "Capture the screen and let OpenSage analyze it"
+    },
+    "find-issues": {
+      "suggested_key": {
+        "mac": "MacCtrl+Shift+I",
+        "default": "Ctrl+Shift+I"
+      },
+      "description": "Find issues / bugs in the current code"
+    }
+  }
+}

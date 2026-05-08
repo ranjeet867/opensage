@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OpenSage</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{width:360px;background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px}
+    .hdr{background:linear-gradient(135deg,rgba(99,102,241,.28),rgba(139,92,246,.28));border-bottom:1px solid rgba(99,102,241,.3);padding:14px 18px;display:flex;align-items:center;gap:10px}
+    .hdr img{width:32px;height:32px;border-radius:8px;box-shadow:0 2px 8px rgba(79,70,229,.4)}
+    .hdr h1{font-size:15px;font-weight:700;color:#a5b4fc}
+    .hdr p{font-size:11px;color:#94a3b8;margin-top:2px}
+    .body{padding:16px 18px}
+    .sec{margin-bottom:14px}
+    .sec-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6366f1;margin-bottom:8px}
+    label{display:block;font-size:12px;color:#94a3b8;margin-bottom:5px}
+    input[type="password"],input[type="text"]{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#e2e8f0;font-size:13px;padding:8px 11px;outline:none;font-family:inherit}
+    input[type="password"]:focus,input[type="text"]:focus{border-color:rgba(99,102,241,.5)}
+    .row{display:flex;gap:8px}
+    .row input{flex:1}
+    .btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;padding:8px 16px;font-family:inherit;transition:opacity .15s;white-space:nowrap}
+    .btn:hover{opacity:.9}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .msg{font-size:11px;margin-top:7px;padding:7px 10px;border-radius:6px;display:none}
+    .msg.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#86efac;display:block}
+    .msg.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;display:block}
+    .badge{display:none;align-items:center;gap:5px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:6px;color:#86efac;font-size:11px;padding:5px 10px;margin-top:8px}
+    .badge.show{display:flex}
+    .dot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+    .mini-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#cbd5e1;cursor:pointer;font-size:12px;font-weight:600;padding:10px 8px;font-family:inherit}
+    .checks{display:grid;gap:8px}
+    .check{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.03)}
+    .check input{width:auto;margin-top:2px}
+    .check span{font-size:12px;color:#cbd5e1;line-height:1.4}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .hero-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid rgba(99,102,241,.28);border-radius:12px;background:rgba(99,102,241,.08)}
+    .hero-copy strong{display:block;font-size:13px;color:#e2e8f0}
+    .hero-copy span{display:block;font-size:11px;color:#94a3b8;margin-top:4px;line-height:1.5}
+    .switch{position:relative;width:46px;height:28px;flex-shrink:0}
+    .switch input{opacity:0;width:0;height:0}
+    .slider{position:absolute;inset:0;background:#334155;border-radius:999px;transition:.2s;cursor:pointer}
+    .slider:before{content:'';position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+    .switch input:checked + .slider{background:#6366f1}
+    .switch input:checked + .slider:before{transform:translateX(18px)}
+    .tip{font-size:11px;color:#64748b;line-height:1.6}
+    .tip strong{color:#94a3b8}
+    .tip kbd{font-family:ui-monospace,Menlo,monospace;font-size:10px;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}
+    .status-list{display:grid;gap:8px}
+    .status-item{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .status-item span:first-child{font-size:12px;color:#94a3b8}
+    .status-value{font-size:12px;color:#e2e8f0;text-align:right}
+    .status-good{color:#86efac}
+    .status-bad{color:#fca5a5}
+    .status-warn{color:#fcd34d}
+    hr{border:none;border-top:1px solid rgba(255,255,255,.06);margin:14px 0}
+    .footer-note{font-size:10px;color:#475569;text-align:center;margin-top:10px;line-height:1.5}
+    .footer-note a{color:#6366f1;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="hdr">
+    <img src="icons/icon48.png" alt="OpenSage">
+    <div>
+      <h1>OpenSage</h1>
+      <p>AI coding companion — works on every site</p>
+    </div>
+  </div>
+  <div class="body">
+
+    <div class="sec">
+      <div class="sec-title">API Key</div>
+      <label>Paste your Anthropic API key (stored only on this machine)</label>
+      <div class="row">
+        <input type="password" id="key-input" placeholder="sk-ant-api03-…" autocomplete="off">
+        <button class="btn" id="save-btn">Save</button>
+      </div>
+      <div class="msg" id="msg"></div>
+      <div class="badge" id="badge"><div class="dot"></div> Ready · claude-haiku-4-5</div>
+    </div>
+
+    <hr>
+
+    <div class="sec">
+      <div class="hero-toggle">
+        <div class="hero-copy">
+          <strong>Enable OpenSage overlay</strong>
+          <span>Shows the floating assistant on every page. Ask, review code, find bugs, run security or screenshot analysis.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="enabled-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="sec">
+      <div class="sec-title">Quick Controls</div>
+      <div class="actions">
+        <button class="mini-btn" id="toggle-overlay">Show / hide overlay</button>
+        <button class="mini-btn" id="test-permissions">Re-check status</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="sec">
+      <div class="sec-title">Preferences</div>
+      <div class="checks">
+        <label class="check">
+          <input type="checkbox" id="audio-assist">
+          <span>Spoken prompts trigger help (uses browser speech-to-text).</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="speak-results">
+          <span>Read answers aloud after analysis completes.</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="large-text">
+          <span>Use larger overlay text.</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="high-contrast">
+          <span>Use higher contrast overlay.</span>
+        </label>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="sec">
+      <div class="sec-title">Status</div>
+      <div class="status-list">
+        <div class="status-item"><span>Microphone</span><span class="status-value" id="status-microphone">Checking</span></div>
+        <div class="status-item"><span>Tab access</span><span class="status-value" id="status-tab">Checking</span></div>
+        <div class="status-item"><span>API key</span><span class="status-value" id="status-api">Checking</span></div>
+        <div class="status-item"><span>Current page</span><span class="status-value" id="status-page">Checking</span></div>
+        <div class="status-item"><span>Site type</span><span class="status-value" id="status-classification">Checking</span></div>
+        <div class="status-item"><span>Assistant</span><span class="status-value" id="status-active">Checking</span></div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="sec">
+      <div class="sec-title">Shortcuts &amp; Tips</div>
+      <p class="tip">
+        <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd> — toggle overlay<br>
+        <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> — find issues in current code<br>
+        <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> — screenshot analysis<br>
+        <br>
+        Turn on <strong>Enable OpenSage overlay</strong> once, and it will follow you on every site — LeetCode, HackerRank, GitHub, or any random page. Click <strong>Issues</strong>, <strong>Security</strong>, or <strong>Refactor</strong> to review your code instantly.
+      </p>
+    </div>
+
+    <p class="footer-note">
+      OpenSage · Open source · MIT License · Bring your own Anthropic API key
+    </p>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
