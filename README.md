@@ -4,20 +4,9 @@
 
 OpenSage is a Chrome / Chromium browser extension that adds a floating coaching overlay to any page that has code on it: LeetCode, HackerRank, GitHub, GitLab, Replit, CodeSandbox, StackBlitz, JSFiddle, your own localhost dev server, anything. Click a button, ask a question by voice or text, screenshot the screen — get back focused, structured technical help.
 
-```
-┌────────────────────────────────────────────────────────────┐
-│  🧠 OpenSage                                  Listen  📸  ⚙ │
-│ ─────────────────────────────────────────────────────────  │
-│  Understand the current page / code                        │
-│  [ Coach ] [ Explain ] [ Draft Code ] [ Complete ] [ How ] │
-│                                                            │
-│  Review & improve (auto-detects the language)              │
-│  [ 🔍 Issues ] [ 🛡 Security ] [ ⚠ Errors ] [ ✨ Refactor ]│
-│  [ 🏗 Sys Design ] [ 📸 Screenshot ]                       │
-│                                                            │
-│  Ask anything — works on every site…           [ Ask ]     │
-└────────────────────────────────────────────────────────────┘
-```
+<p align="center"><img src="demo.svg" alt="OpenSage demo — overlay slides in, click 🔍 Issues, structured findings appear" width="880"/></p>
+
+<sub>↑ animated mockup of the overlay in action (~8s loop). The real thing renders inline on every coding site you visit.</sub>
 
 ## Why this exists
 

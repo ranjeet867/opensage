@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 540" width="100%">
+  <!-- Mock OpenSage overlay demo (animated SVG, GitHub renders these in READMEs).
+       8-second loop: page appears → overlay slides in → button highlights →
+       thinking spinner → structured answer fades in. Replace with a real
+       screencast (.gif/.mp4) when you have one. -->
+  <defs>
+    <linearGradient id="page-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="overlay-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e293b" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#0f172a" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="logo-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <style>
+      .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+      .ui   { font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; }
+      .kw   { fill: #c084fc; }
+      .str  { fill: #86efac; }
+      .num  { fill: #fbbf24; }
+      .com  { fill: #64748b; }
+    </style>
+  </defs>
+
+  <!-- ===== Background "page" with code ===== -->
+  <rect width="880" height="540" fill="url(#page-bg)"/>
+
+  <!-- Browser-ish chrome -->
+  <rect x="0" y="0" width="880" height="32" fill="#0b1220"/>
+  <circle cx="18" cy="16" r="5" fill="#ef4444"/>
+  <circle cx="36" cy="16" r="5" fill="#f59e0b"/>
+  <circle cx="54" cy="16" r="5" fill="#10b981"/>
+  <rect x="80" y="8" width="600" height="16" rx="8" fill="#1e293b"/>
+  <text x="92" y="20" class="ui" font-size="10" fill="#64748b">leetcode.com / problems / two-sum</text>
+
+  <!-- Code body -->
+  <text x="36" y="80"  class="mono" font-size="13" fill="#94a3b8"><tspan class="com">// Given an array of integers nums and a target value...</tspan></text>
+  <text x="36" y="108" class="mono" font-size="13" fill="#e2e8f0"><tspan class="kw">function</tspan> <tspan fill="#7dd3fc">twoSum</tspan>(nums, target) {</text>
+  <text x="56" y="128" class="mono" font-size="13" fill="#e2e8f0">  <tspan class="kw">const</tspan> seen = <tspan class="kw">new</tspan> <tspan fill="#fbbf24">Map</tspan>();</text>
+  <text x="56" y="148" class="mono" font-size="13" fill="#e2e8f0">  <tspan class="kw">for</tspan> (<tspan class="kw">let</tspan> i = <tspan class="num">0</tspan>; i &lt; nums.length; i++) {</text>
+  <text x="76" y="168" class="mono" font-size="13" fill="#e2e8f0">    <tspan class="kw">const</tspan> diff = target - nums[i];</text>
+  <text x="76" y="188" class="mono" font-size="13" fill="#e2e8f0">    <tspan class="kw">if</tspan> (seen.has(diff)) <tspan class="kw">return</tspan> [seen.get(diff), i];</text>
+  <text x="76" y="208" class="mono" font-size="13" fill="#e2e8f0">    seen.set(nums[i], i);</text>
+  <text x="56" y="228" class="mono" font-size="13" fill="#e2e8f0">  }</text>
+  <text x="36" y="248" class="mono" font-size="13" fill="#e2e8f0">}</text>
+
+  <!-- ===== OpenSage overlay (slides down + appears) ===== -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;1;1;1;1" dur="8s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate"
+                      values="0,-30; 0,-30; 0,0; 0,0; 0,0; 0,0; 0,0; 0,-30"
+                      dur="8s" repeatCount="indefinite"/>
+
+    <!-- Panel -->
+    <rect x="180" y="50" width="660" height="430" rx="14" fill="url(#overlay-bg)" stroke="#475569" stroke-width="1"/>
+
+    <!-- Header -->
+    <circle cx="206" cy="78" r="14" fill="url(#logo-grad)"/>
+    <text x="206" y="83" class="ui" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">CS</text>
+    <text x="232" y="76" class="ui" font-size="13" font-weight="700" fill="#f8fafc">OpenSage</text>
+    <text x="232" y="89" class="ui" font-size="10" fill="#94a3b8">universal · open source</text>
+
+    <!-- Header pills -->
+    <rect x="600" y="62" width="80" height="28" rx="9" fill="#6366f1" opacity="0.85"/>
+    <text x="640" y="80" class="ui" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">🎤 Listen</text>
+    <rect x="690" y="62" width="80" height="28" rx="9" fill="#1e293b" stroke="#475569"/>
+    <text x="730" y="80" class="ui" font-size="12" font-weight="700" fill="#cbd5e1" text-anchor="middle">📸 Capture</text>
+    <rect x="780" y="62" width="48" height="28" rx="9" fill="#1e293b" stroke="#475569"/>
+    <text x="804" y="80" class="ui" font-size="14" fill="#cbd5e1" text-anchor="middle">×</text>
+
+    <!-- Section label 1 -->
+    <text x="200" y="118" class="ui" font-size="11" fill="#cbd5e1">Understand the current code or topic</text>
+    <!-- Action row 1 -->
+    <g class="ui" font-size="12" font-weight="600">
+      <rect x="200" y="128" width="68" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="234" y="146" fill="#cbd5e1" text-anchor="middle">Coach</text>
+      <rect x="276" y="128" width="74" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="313" y="146" fill="#cbd5e1" text-anchor="middle">Explain</text>
+      <rect x="358" y="128" width="92" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="404" y="146" fill="#cbd5e1" text-anchor="middle">Draft Code</text>
+      <rect x="458" y="128" width="86" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="501" y="146" fill="#cbd5e1" text-anchor="middle">Complete</text>
+      <rect x="552" y="128" width="98" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="601" y="146" fill="#cbd5e1" text-anchor="middle">How To Use</text>
+    </g>
+
+    <!-- Section label 2 -->
+    <text x="200" y="180" class="ui" font-size="11" fill="#cbd5e1">Review &amp; improve (auto-detects the language)</text>
+    <!-- Action row 2 with Issues button highlighting -->
+    <g class="ui" font-size="12" font-weight="600">
+      <!-- Issues — highlights with a click flash -->
+      <rect x="200" y="190" width="84" height="28" rx="8" fill="#1e293b" stroke="#475569">
+        <animate attributeName="fill"   values="#1e293b;#1e293b;#1e293b;#3730a3;#1e293b;#1e293b;#1e293b;#1e293b" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="stroke" values="#475569;#475569;#475569;#a5b4fc;#475569;#475569;#475569;#475569" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <text x="242" y="208" fill="#cbd5e1" text-anchor="middle">🔍 Issues</text>
+      <rect x="292" y="190" width="100" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="342" y="208" fill="#cbd5e1" text-anchor="middle">🛡 Security</text>
+      <rect x="400" y="190" width="86" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="443" y="208" fill="#cbd5e1" text-anchor="middle">⚠ Errors</text>
+      <rect x="494" y="190" width="98" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="543" y="208" fill="#cbd5e1" text-anchor="middle">✨ Refactor</text>
+      <rect x="600" y="190" width="116" height="28" rx="8" fill="#1e293b" stroke="#475569"/>
+      <text x="658" y="208" fill="#cbd5e1" text-anchor="middle">🏗 Sys Design</text>
+    </g>
+
+    <!-- Ask box -->
+    <rect x="200" y="232" width="620" height="40" rx="10" fill="#0f172a" stroke="#475569"/>
+    <text x="212" y="257" class="ui" font-size="13" fill="#64748b">Ask anything — works on every site…</text>
+    <rect x="752" y="232" width="68" height="40" rx="10" fill="#1e293b" stroke="#475569"/>
+    <text x="786" y="257" class="ui" font-size="13" font-weight="700" fill="#cbd5e1" text-anchor="middle">Ask</text>
+
+    <!-- ===== Status / answer (fades in mid-loop) ===== -->
+    <g>
+      <!-- Thinking phase (visible from 3s-5s) -->
+      <text x="200" y="298" class="ui" font-size="11" fill="#fbbf24" opacity="0">
+        <animate attributeName="opacity" values="0;0;0;1;0;0;0;0" dur="8s" repeatCount="indefinite"/>
+        ⟳  Capturing screen… analyzing…
+      </text>
+    </g>
+
+    <!-- Answer card (fades in from 5s onward) -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;0;0;1;1;1;0" dur="8s" repeatCount="indefinite"/>
+
+      <rect x="200" y="288" width="620" height="172" rx="10" fill="#0f172a" stroke="#475569"/>
+
+      <text x="212" y="308" class="ui" font-size="11" font-weight="800" fill="#c7d2fe" letter-spacing="1">FIND ISSUES</text>
+
+      <text x="212" y="334" class="ui" font-size="14" font-weight="800" fill="#fca5a5">## 🔴 Critical</text>
+      <text x="220" y="356" class="ui" font-size="13" fill="#fff">
+        • <tspan class="mono" fill="#a5d8ff">twoSum() L4</tspan> — early <tspan class="kw" fill="#c084fc">return</tspan> doesn't handle empty input
+      </text>
+      <text x="232" y="374" class="ui" font-size="12" fill="#cbd5e1">
+        Fix: <tspan class="mono" fill="#a5d8ff">if (!nums?.length) return [];</tspan>
+      </text>
+
+      <text x="212" y="404" class="ui" font-size="14" font-weight="800" fill="#fdba74">## 🟡 Medium</text>
+      <text x="220" y="426" class="ui" font-size="13" fill="#fff">
+        • Map allocation could be skipped for n &lt; 3 (constant-factor)
+      </text>
+      <text x="220" y="446" class="ui" font-size="13" fill="#fff">
+        • No explicit return when no pair found — implicit <tspan class="kw" fill="#c084fc">undefined</tspan>
+      </text>
+    </g>
+
+    <!-- Footer -->
+    <text x="200" y="476" class="ui" font-size="10" fill="#94a3b8" opacity="0.85">
+      ⌘⇧Space toggle · ⌘⇧S capture · ⌘⇧L listen · ⌘⇧K focus · ⌘⏎ submit
+    </text>
+  </g>
+</svg>
