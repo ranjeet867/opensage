@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "description": "Open-source AI coding companion that works on every website. Auto-detects the language, explains code, drafts & completes solutions, finds bugs, reviews security, and answers spoken questions — all powered by your own Anthropic API key.",
   "author": "OpenSage Contributors",
-  "homepage_url": "https://github.com/REPLACE-WITH-YOUR-GITHUB/opensage",
+  "homepage_url": "https://github.com/ranjeet867/opensage",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",

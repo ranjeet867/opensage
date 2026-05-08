@@ -47,7 +47,7 @@ OpenSage is none of those. It's an in-page overlay that:
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/REPLACE-WITH-YOUR-GITHUB/opensage.git
+   git clone https://github.com/ranjeet867/opensage.git
    cd opensage
    ```
 2. Open Chrome (or Edge / Brave / Arc) and go to `chrome://extensions`.
@@ -132,7 +132,7 @@ About 1500 lines of vanilla JS — no build step, no bundler, no node_modules. Y
 ## Development
 
 ```bash
-git clone https://github.com/REPLACE-WITH-YOUR-GITHUB/opensage.git
+git clone https://github.com/ranjeet867/opensage.git
 cd opensage
 # 1. Make your changes (edit any .js / .css / .html)
 # 2. Reload the extension at chrome://extensions

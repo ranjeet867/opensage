@@ -22,7 +22,7 @@ Thanks for considering a contribution. OpenSage is small on purpose, and the rul
 ## How to develop
 
 ```bash
-git clone https://github.com/REPLACE-WITH-YOUR-GITHUB/opensage.git
+git clone https://github.com/ranjeet867/opensage.git
 cd opensage
 ```
 
