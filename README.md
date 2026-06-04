@@ -1,5 +1,8 @@
 # OpenSage
 
+Install Chrome App <https://chromewebstore.google.com/detail/codesage-pro-%E2%80%94-universal/cbkkghdedpjamcicmnfpihehmgjemmhi>
+
+
 > **An open-source AI coding companion that works on every website. Powered by your own Anthropic API key — your code never leaves your browser except to go directly to Anthropic.**
 
 OpenSage is a Chrome / Chromium browser extension that adds a floating coaching overlay to any page that has code on it: LeetCode, HackerRank, GitHub, GitLab, Replit, CodeSandbox, StackBlitz, JSFiddle, your own localhost dev server, anything. Click a button, ask a question by voice or text, screenshot the screen — get back focused, structured technical help.
